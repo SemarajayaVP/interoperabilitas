@@ -8,7 +8,7 @@
     "sourceMap": false,
 
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "./",
     "resolveJsonModule": true,
 
     "skipLibCheck": true,
@@ -17,7 +17,7 @@
     
     "strict": false,
   },
-  "include": ["src"],
+  "include": ["./index.ts", "src/**/*"],
   "exclude": ["node_modules", "dist/*", "src/static"],
   "lib": ["es6"]
 }

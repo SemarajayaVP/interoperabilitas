@@ -1,39 +1,20 @@
-import { MongoClient } from 'mongodb';
+import router from './router';
+import Koa from 'koa';
+import mongoose from 'mongoose';
+import bodyParser from 'koa-body';
 
-const express = require('express');
-const body = require('body-parser');
+import { MONGO_DEBUG, MONGODB_URL } from './config';
+import { Mongoose } from 'mongoose';
 
-async function start() {
-  try {
+const app = new Koa();
+let conn: Mongoose;
 
-    const app = express();
-
-    const mongo = await MongoClient.connect('mongodb://localhost:27017/crm_api');
-
-    await mongo.connect();
-
-    app.db = mongo.db();
-
-    // body parser
-
-    app.use(body.json({
-      limit: '500kb'
-    }));
-
-    // Routes
-
-    app.use('/customers', require('./routes/customers'));
-
-    // Start server
-
-    app.listen(3000, () => {
-      console.log('Server is running on port 3000');
-    });
-
-  }
-  catch(error) {
-    console.log(error);
-  }
-}
-
-start();
+app.use(async (ctx, next) => {
+  if (conn === undefined) conn = await mongoose.connect(MONGODB_URL);
+  mongoose.set('debug', MONGO_DEBUG);
+  await next();
+});
+app.use(bodyParser());
+app.use(router.routes());
+app.use(router.allowedMethods());
+export const App = app;

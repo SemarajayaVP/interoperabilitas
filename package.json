@@ -4,20 +4,44 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node src/index.ts"
+    "start": "npm run build-ts && npm run watch-debug",
+    "debug": "npm run build-ts && npm run watch-debug",
+    "build-ts": "npm run build-ts-tsc && npm run tslint",
+    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "build-ts-tsc": "tsc",
+    "prettier": "prettier --config ./.prettierrc --write \"**/*.js\"",
+    "lint": "yarn prettier --write --check --config ./.prettierrc \"**/*.js\" && eslint --fix ./src",
+    "release": "release-it patch --no-npm.publish",
+    "serve-debug": " nodemon --inspect --optimize_for_size --max_old_space_size=920 dist/index.js",
+    "watch-ts": "tsc -w",
+    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\"",
+    "test": "jest --ci --runInBand --detectOpenHandles --reporters=default --reporters=jest-junit --testTimeout=70000 --verbose"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/koa": "^2.11.4",
+    "@types/koa-bodyparser": "^4.3.0",
+    "@types/koa-router": "7.4.1",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
     "express": "^4.18.2",
+    "koa": "^2.15.3",
+    "koa-body": "^4.0.7",
+    "koa-bodyparser": "^4.3.0",
+    "koa-multer": "^1.0.2",
+    "koa-router": "^9.4.0",
     "mongodb": "^5.7.0",
-    "ts-node": "^10.9.1"
+    "mongoose": "^8.7.2",
+    "mongoose-timestamp": "^0.6.0",
+    "ts-node": "^10.9.1",
+    "tslint": "^6.1.3",
+    "typescript": "^4.4.4"
   },
   "devDependencies": {
     "@types/node": "^20.4.2",
+    "concurrently": "^9.1.0",
     "types": "^0.1.1"
   }
 }
