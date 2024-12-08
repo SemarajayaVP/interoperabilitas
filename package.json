@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build-ts && npm run watch-debug",
+    "start": "npm run build-ts && node dist/index.js",
     "debug": "npm run build-ts && npm run watch-debug",
     "build-ts": "npm run build-ts-tsc && npm run tslint",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
@@ -12,7 +12,7 @@
     "prettier": "prettier --config ./.prettierrc --write \"**/*.js\"",
     "lint": "yarn prettier --write --check --config ./.prettierrc \"**/*.js\" && eslint --fix ./src",
     "release": "release-it patch --no-npm.publish",
-    "serve-debug": " nodemon --inspect --optimize_for_size --max_old_space_size=920 dist/index.js",
+    "serve-debug": "nodemon --inspect --optimize_for_size --max_old_space_size=920 dist/index.js",
     "watch-ts": "tsc -w",
     "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\"",
     "test": "jest --ci --runInBand --detectOpenHandles --reporters=default --reporters=jest-junit --testTimeout=70000 --verbose"
